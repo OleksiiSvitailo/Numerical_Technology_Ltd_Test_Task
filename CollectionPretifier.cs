@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 
 namespace NumericalTechnologyLtdTestTask
 {
-    enum format { def};
+    enum format { Default};
     public class FormatAttribute : Attribute
     {
-        format format;
+        private format format;
 
+        public format Format 
         FormatAttribute(string? format)
         {
             if (format == null)
-                this.format = NumericalTechnologyLtdTestTask.format.def;
+                this.format = NumericalTechnologyLtdTestTask.format.Default;
             switch(format)
             {
                 case "":
                 case "default":
-                    this.format = NumericalTechnologyLtdTestTask.format.def;
+                    this.format = NumericalTechnologyLtdTestTask.format.Default;
                     break;
                 default:throw new ArgumentException("Invalid parametr format");
             }
@@ -40,8 +41,10 @@ namespace NumericalTechnologyLtdTestTask
             var fields = collection.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             var properties = collection.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
             StringBuilder sb = new StringBuilder();
+            format format;
             foreach (var field in fields)
             {
+
                 var value = field.GetValue(collection);
                 sb.Append(field.GetType().Name + " " + field.Name + ":" + value);
             }

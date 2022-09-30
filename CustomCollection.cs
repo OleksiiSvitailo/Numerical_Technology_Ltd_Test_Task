@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text;
@@ -7,10 +8,15 @@ namespace Numerical_Technology_Ltd_Test_Task
 {
     public class CustomCollection<T> :IEnumerable
                  where T : struct, 
-                           IConvertible, 
-                           IComparable
+                           IConvertible,
+                           IComparable,
+                           IFormattable, 
+                           IComparable<T>, 
+                           IEquatable<T>
     {
         private Dictionary<int, T> collection;
+
+        private object _lockObj= new object();
 
         public T Max { get; private set; }
 
@@ -100,14 +106,17 @@ namespace Numerical_Technology_Ltd_Test_Task
                 {
                     var startPosition = threadsNumber * batchLength;
                     var endPosition = startPosition + batchLength;
-                    for (var index = startPosition; index < endPosition; index++)//lock?
+                    lock (_lockObj)
                     {
-                        if(predicate(collection[index]))
+                        for (var index = startPosition; index < endPosition; index++)//lock?
                         {
-                             if (resultsCount>1)
-                                 throw new ArgumentException("Collectoin contains more than one element which satisfy predicate");
-                            result = collection[index];
-                            resultsCount++;
+                            if (predicate(collection[index]))
+                            {
+                                if (resultsCount > 1)
+                                    throw new ArgumentException("Collectoin contains more than one element which satisfy predicate");
+                                result = collection[index];
+                                resultsCount++;
+                            }
                         }
                     }
                 }));
