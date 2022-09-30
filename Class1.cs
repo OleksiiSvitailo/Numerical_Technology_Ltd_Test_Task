@@ -11,8 +11,11 @@ namespace Numerical_Technology_Ltd_Test_Task
                            IComparable
     {
         private Dictionary<int, T> collection;
+
         public T Max { get; private set; }
+
         public int Length { get => collection.Count; }
+
         private bool IsNumericType()
         {
             switch (Type.GetTypeCode(typeof(T)))
@@ -32,6 +35,7 @@ namespace Numerical_Technology_Ltd_Test_Task
             }
             return false;
         }
+
         public CustomCollection()
         {
             if (IsNumericType())
@@ -39,12 +43,14 @@ namespace Numerical_Technology_Ltd_Test_Task
             else
                 throw new InvalidOperationException("Type of collection must be numeric");
         }
+
         public void Add(T item)
         {
             if (item.CompareTo(Max) > 0)
                 Max = item;
             collection.Add(Length, item);
         }
+
         public void InsertAt(int index, T item)
         {
             if (index < 0 || index >= Length)
@@ -56,6 +62,7 @@ namespace Numerical_Technology_Ltd_Test_Task
                 collection[i] = collection[i - 1];
             collection[index] = item;
         }
+
         public bool Remove(T item)
         {
             for (int i = 0; i < Length; i++)
@@ -65,14 +72,18 @@ namespace Numerical_Technology_Ltd_Test_Task
             }
             return false;
         }
+
         public bool RemoveAt(int index)
         {
             if(index<0||index>=Length)
             throw new ArgumentOutOfRangeException($"Collection doesn`t contains element with index:{index}");
             return collection.Remove(index);
         }
+
         public IEnumerator GetEnumerator() => collection.GetEnumerator();
+
         public T this[int index] { get => collection[index]; set => collection[index] = value; }
+
         public async Task<T> SingleAsync(Func<T, bool> predicate)
         {
             if (Length == 0)
@@ -109,6 +120,7 @@ namespace Numerical_Technology_Ltd_Test_Task
     public class FormatAttribute:Attribute
     {
         string format;
+
         FormatAttribute(string format)
         {
             this.format = format;
@@ -117,7 +129,9 @@ namespace Numerical_Technology_Ltd_Test_Task
     public class CollectionPretifier
     {
         private string collectionsInformation;
+
         public string CollectionsInformation { get; }
+
         public CollectionPretifier(IEnumerable collection)
         {
             var fields = collection.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
