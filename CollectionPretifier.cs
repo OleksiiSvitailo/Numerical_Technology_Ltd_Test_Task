@@ -8,13 +8,24 @@ using System.Threading.Tasks;
 
 namespace NumericalTechnologyLtdTestTask
 {
+    enum format { def};
     public class FormatAttribute : Attribute
     {
-        enum format;
+        format format;
 
-        FormatAttribute(string format)
+        FormatAttribute(string? format)
         {
-            this.format = format;
+            if (format == null)
+                this.format = NumericalTechnologyLtdTestTask.format.def;
+            switch(format)
+            {
+                case "":
+                case "default":
+                    this.format = NumericalTechnologyLtdTestTask.format.def;
+                    break;
+                default:throw new ArgumentException("Invalid parametr format");
+            }
+
         }
     }
 
@@ -39,6 +50,7 @@ namespace NumericalTechnologyLtdTestTask
                 var value = property.GetValue(collection);
                 sb.Append(property.GetType().Name + " " + property.Name + ":" + value);
             }
+        collectionsInformation = sb.ToString();
         }
     }
 }
