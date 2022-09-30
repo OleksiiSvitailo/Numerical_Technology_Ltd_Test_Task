@@ -124,5 +124,5 @@ namespace Numerical_Technology_Ltd_Test_Task
             else
             return result.Value;
         }
-    } 
+    }
 } 
