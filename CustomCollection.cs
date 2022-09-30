@@ -98,9 +98,9 @@ namespace Numerical_Technology_Ltd_Test_Task
             for (var threadsNumber = 0; threadsNumber < threadsAmount; threadsNumber++)
                 tasks.Add(Task.Run(() =>
                 {
-                    var startPosition = threadsNumber * 100;
+                    var startPosition = threadsNumber * batchLength;
                     var endPosition = startPosition + batchLength;
-                    for (var index = startPosition; index < endPosition; index++)
+                    for (var index = startPosition; index < endPosition; index++)//lock?
                     {
                         if(predicate(collection[index]))
                         {
@@ -117,27 +117,4 @@ namespace Numerical_Technology_Ltd_Test_Task
             return result;
         }
     }
-    public class FormatAttribute:Attribute
-    {
-        string format;
-
-        FormatAttribute(string format)
-        {
-            this.format = format;
-        }
-    }
-    public class CollectionPretifier
-    {
-        private string collectionsInformation;
-
-        public string CollectionsInformation { get; }
-
-        public CollectionPretifier(IEnumerable collection)
-        {
-            var fields = collection.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            var properties = collection.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-            StringBuilder sb =new StringBuilder();
-        }
-    }
-
 }
