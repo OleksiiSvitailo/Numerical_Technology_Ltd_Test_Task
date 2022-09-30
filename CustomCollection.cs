@@ -125,4 +125,4 @@ namespace Numerical_Technology_Ltd_Test_Task
             return result.Value;
         }
     }
-}
+} 
