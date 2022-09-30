@@ -96,8 +96,7 @@ namespace Numerical_Technology_Ltd_Test_Task
                 throw new ArgumentException("Collection must contains at least one member");
             if (predicate == null)
                 throw new ArgumentNullException("Predicate can`t be a NULL");
-            T result = collection[0];
-            var resultsCount = 0;
+            T? result = null;
             const int batchLength = 100;
             var threadsAmount = Length / batchLength + 1;
             List<Task> tasks = new List<Task>();
@@ -112,18 +111,18 @@ namespace Numerical_Technology_Ltd_Test_Task
                         {
                             if (predicate(collection[index]))
                             {
-                                if (resultsCount > 1)
+                                if (result!=null)
                                     throw new ArgumentException("Collectoin contains more than one element which satisfy predicate");
                                 result = collection[index];
-                                resultsCount++;
                             }
                         }
                     }
                 }));
             Task.WaitAll(tasks.ToArray());
-            if(resultsCount==0)
+            if(result==null)
                 throw new ArgumentException("Collectoin doesn`t contains element which satisfy predicate");
-            return result;
+            else
+            return result.Value;
         }
     }
 }
